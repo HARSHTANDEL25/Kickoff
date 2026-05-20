@@ -41,10 +41,10 @@ const DesktopNavigation = () => {
                                 <Link
                                     key={index}
                                     href={nav.href}
-                                    className={`relative px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 group
+                                    className={`relative px-4 py-2 rounded-lg text-md font-medium transition-colors duration-200 group
                                         ${isActive ? 'text-white' : 'text-[#9ca3af] hover:text-white'}`}
                                 >
-                                    <span className='flex items-center gap-1.5'>
+                                    <span className='flex items-center gap-1.5 '>
                                         {nav.label === 'Live' && (
                                             <span className='w-1.5 h-1.5 rounded-full bg-[#FF4747] animate-live' />
                                         )}
