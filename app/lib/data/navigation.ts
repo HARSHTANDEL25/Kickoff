@@ -1,4 +1,4 @@
-import { LayoutDashboard, Trophy, Newspaper, Users, Search, Radio, ArrowRightLeft } from "lucide-react";
+import { LayoutDashboard, Trophy, Newspaper, Radio, ArrowRightLeft } from "lucide-react";
 
 const navlinks = [
     { label: "Home", href: "/", icon: LayoutDashboard },
@@ -8,11 +8,6 @@ const navlinks = [
     { label: "News", href: "/news", icon: Newspaper },
 ]
 
-
-export const rightNavlinks = [
-    { label: "Search", href: "/search", icon: Search },
-    { label: "Profile", href: "/profile", icon: Users },
-
-]
+export const rightNavlinks: { label: string; href: string; icon: any }[] = []
 
 export default navlinks
