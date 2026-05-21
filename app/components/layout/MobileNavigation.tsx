@@ -51,7 +51,7 @@ const MobileNavigation = () => {
           {/* Logo */}
           <span className="text-lg font-black tracking-tight">
             <span className="text-white">Kick</span>
-            <span className="gradient-text">Off</span>
+            <span className="text-[#00f5d4]">Off</span>
           </span>
 
           <div className="w-10" />
