@@ -123,8 +123,14 @@ export async function GET() {
             a => !rssLower.has(a.title.toLowerCase().slice(0, 40))
         )
 
+        const seenUrls = new Set<string>()
         const articles = [...rssArticles, ...uniqueESPN]
-            .filter(a => a.title && a.url)
+            .filter(a => {
+                if (!a.title || !a.url) return false
+                if (seenUrls.has(a.url)) return false
+                seenUrls.add(a.url)
+                return true
+            })
             .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime())
 
         return NextResponse.json(articles, {
