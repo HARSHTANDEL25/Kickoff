@@ -19,18 +19,18 @@ const DesktopNavigation = () => {
     }, [])
 
     return (
-        <div className='w-full fixed top-0 z-50 px-6 pt-4'>
+        <div className={`w-full fixed top-0 z-50 px-6 py-2 transition-colors duration-300 ${scrolled ? 'bg-[#080B10]' : ''}`}>
             <div className={`max-w-300 mx-auto rounded-2xl transition-all duration-300 ${
                 scrolled
-                    ? 'bg-[#09090b]/90 backdrop-blur-xl border border-white/5 shadow-lg'
-                    : 'bg-transparent border border-transparent'
+                    ? 'bg-[#09090b]/90 backdrop-blur-xl  shadow-lg'
+                    : 'bg-transparent'
             }`}>
-                <div className='flex items-center justify-between glass rounded-xl h-14 px-6'>
+                <div className='flex items-center justify-between rounded-xl h-14 px-6'>
 
                     {/* Logo */}
                     <Link href="/" className='text-xl font-black tracking-tight'>
                         <span className='text-white'>Kick</span>
-                        <span className='gradient-text'>Off</span>
+                        <span className='text-[#00f5d4]'>Off</span>
                     </Link>
 
                     {/* Center Nav */}
