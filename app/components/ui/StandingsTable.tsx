@@ -42,7 +42,7 @@ export default function StandingsTable({ standings }: { standings: Standing[] })
                     {standings.map((row) => (
                         <tr
                             key={row.rank}
-                            className={`${getRowAccent(row.rank)} hover:bg-white/5 transition-colors duration-150 border-b border-white/3 cursor-pointer`}
+                            className={`${getRowAccent(row.rank)} hover:bg-white/5 transition-colors duration-150 border-b border-white/3 `}
                         >
                             <td className='py-2.5 pl-3 text-[#9ca3af] text-xs'>{row.rank}</td>
                             <td className='py-2.5 pl-2'>

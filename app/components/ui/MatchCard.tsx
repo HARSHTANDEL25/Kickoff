@@ -48,7 +48,7 @@ export default function MatchCard({ fixture, league, teams, goals }: Fixture) {
     const live = isLive(fixture.status.short)
 
     return (
-        <div className='glass rounded-2xl p-4 hover:border-white/10 transition-all duration-200 cursor-pointer group'>
+        <div className='glass rounded-2xl p-4 transition-all duration-200'>
 
             {/* League + Status */}
             <div className='flex items-center justify-between mb-4'>
