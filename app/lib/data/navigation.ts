@@ -1,4 +1,4 @@
-import { LayoutDashboard, Trophy, Newspaper, Users, Search, Radio, ArrowRightLeft, Shield } from "lucide-react";
+import { LayoutDashboard, Trophy, Newspaper, Users, Search, Radio, ArrowRightLeft } from "lucide-react";
 
 const navlinks = [
     { label: "Home", href: "/", icon: LayoutDashboard },
@@ -6,8 +6,6 @@ const navlinks = [
     { label: "Live", href: "/live", icon: Radio },
     { label: "Transfers", href: "/transfers", icon: ArrowRightLeft },
     { label: "News", href: "/news", icon: Newspaper },
-    { label: "Clubs", href: "/clubs", icon: Shield },
-
 ]
 
 
