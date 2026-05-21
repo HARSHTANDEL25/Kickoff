@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Science_Gothic } from "next/font/google";
 import "./globals.css";
 import Navigation from "./components/layout/Navigation";
+import Footer from "./components/layout/Footer";
 
 const ScienceGothic = Science_Gothic({
   weight: ["400", "700"],
@@ -26,6 +27,7 @@ export default function RootLayout({
         <main className="pt-20">
           {children}
         </main>
+        <Footer />
       </body>
     </html>
   );
