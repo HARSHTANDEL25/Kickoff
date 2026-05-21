@@ -74,10 +74,7 @@ export default function Footer() {
                 {/* Bottom bar */}
                 <div className='border-t border-white/5 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3'>
                     <p className='text-xs text-[#4b5563]'>
-                        © {new Date().getFullYear()} KickOff. Built with Next.js & ESPN API.
-                    </p>
-                    <p className='text-xs text-[#4b5563]'>
-                        Data sourced from ESPN · BBC Sport · Sky Sports · The Guardian
+                        © {new Date().getFullYear()} KickOff. All rights reserved.
                     </p>
                 </div>
 
