@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from 'react'
+import Link from 'next/link'
 import MatchCard from '../ui/MatchCard'
 
 type Fixture = {
@@ -46,7 +47,7 @@ export default function FixturesSection() {
     }, [])
 
     const filtered = activeTab === 'All'
-        ? fixtures
+        ? fixtures.slice(0, 12)
         : fixtures.filter(f => f.league.name === activeTab)
 
     return (
@@ -59,6 +60,11 @@ export default function FixturesSection() {
                         <h2 className='text-2xl font-bold text-white'>Fixtures</h2>
                         <p className='text-sm text-[#9ca3af] mt-1'>Live & upcoming matches</p>
                     </div>
+                    {activeTab === 'All' && (
+                        <Link href='/live' className='text-sm font-medium text-white px-4 py-1.5 rounded-lg border border-white/10 bg-white/5 hover:bg-white/10 transition-all duration-200'>
+                            View all →
+                        </Link>
+                    )}
                 </div>
 
                 {/* Tabs */}
