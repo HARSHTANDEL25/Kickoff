@@ -5,7 +5,7 @@ import Link from 'next/link'
 
 const Hero = () => {
     return (
-        <section className='relative min-h-screen flex items-center justify-center overflow-hidden'>
+        <section className='relative py-22 md:py-28 flex items-center justify-center overflow-hidden'>
 
             {/* Background glow */}
             <div className='absolute inset-0 pointer-events-none'>
