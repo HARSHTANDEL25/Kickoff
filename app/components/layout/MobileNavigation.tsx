@@ -1,12 +1,7 @@
 "use client";
 
 import navlinks from "@/app/lib/data/navigation";
-import {
-  Menu,
-  Search,
-  User,
-  X,
-} from "lucide-react";
+import { Menu, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -59,16 +54,7 @@ const MobileNavigation = () => {
             <span className="gradient-text">Off</span>
           </span>
 
-          {/* Right Icons */}
-          <div className="flex items-center gap-2">
-            <button className="p-2 rounded-lg transition-all duration-200 hover:bg-white/5 active:scale-95">
-              <Search size={18} className="text-[#9ca3af]" />
-            </button>
-
-            <button className="p-2 rounded-lg transition-all duration-200 hover:bg-white/5 active:scale-95">
-              <User size={18} className="text-[#9ca3af]" />
-            </button>
-          </div>
+          <div className="w-10" />
         </div>
 
         {/* Dropdown */}
