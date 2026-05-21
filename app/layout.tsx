@@ -23,7 +23,9 @@ export default function RootLayout({
     <html lang="en" className={`${ScienceGothic.variable} h-full`}>
       <body className="min-h-screen antialiased" style={{ background: 'var(--background)', color: 'var(--foreground)' }}>
         <Navigation />
-        {children}
+        <main className="pt-20">
+          {children}
+        </main>
       </body>
     </html>
   );
