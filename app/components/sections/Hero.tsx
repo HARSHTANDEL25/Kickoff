@@ -73,7 +73,7 @@ const Hero = () => {
                     className='flex items-center gap-10 mt-16 text-center'
                 >
                     {[
-                        { value: 'Top 5 European league', label: 'Leagues' },
+                        { value: 'Top 5 ', label: 'Leagues' },
                         { value: '8', label: 'News Sources' },
                         { value: '30s', label: 'Refresh Rate' },
                     ].map((stat, i) => (

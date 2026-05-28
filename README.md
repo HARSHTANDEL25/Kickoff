@@ -1,36 +1,85 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# KickOff
+
+A premium football dashboard for the community — live scores, standings, team info, match details, transfers, and news across the top 5 European leagues and UEFA competitions.
+
+Live: [kickoff-tau.vercel.app](https://kickoff-tau.vercel.app)
+
+---
+
+## Features
+
+- **Live Scores** — real-time match cards with scores, status, and league badges
+- **Leagues** — standings table for PL, La Liga, Serie A, Bundesliga, Ligue 1 + knockout brackets for UCL, UEL, UECL
+- **Teams** — browse all ~100 clubs by league, search across all of them, view squad, results, and upcoming fixtures
+- **Match Detail** — head-to-head record, recent form, season stats comparison
+- **Transfers** — latest transfer news and rumours
+- **News** — aggregated football-only news from BBC Sport, Sky Sports, ESPN FC, Guardian, Goal.com, Marca, and more
+
+---
+
+## Tech Stack
+
+- **Framework**: Next.js 15 (App Router)
+- **Styling**: Tailwind CSS
+- **Animations**: Framer Motion
+- **Data**: ESPN unofficial API + RSS feeds
+- **Deployment**: Vercel
+
+---
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Project Structure
 
-## Learn More
+```
+app/
+├── api/              # API routes (ESPN proxy + RSS aggregation)
+│   ├── fixtures/     # Live and upcoming fixtures
+│   ├── standings/    # League tables
+│   ├── bracket/      # UCL/UEL/UECL knockout brackets
+│   ├── teams/        # All teams by league
+│   ├── team/[id]/    # Team detail (squad, results, fixtures)
+│   ├── match/[id]/   # Match detail (H2H, form, stats)
+│   ├── transfers/    # Transfer news
+│   └── news/         # Aggregated news
+├── components/
+│   ├── layout/       # Navigation (desktop + mobile), footer
+│   └── ui/           # MatchCard, StandingsTable, KnockoutBracket, etc.
+├── lib/
+│   └── data/         # Navigation links, league slug mappings
+├── leagues/          # Leagues page
+├── live/             # Live scores page
+├── teams/            # Teams directory
+├── team/[id]/        # Team detail page
+├── match/[id]/       # Match detail page
+├── transfers/        # Transfers page
+└── news/             # News page
+```
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Data Sources
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+All data is fetched from ESPN's public APIs and public RSS feeds. No API key required.
 
-## Deploy on Vercel
+- Scores & fixtures: `site.api.espn.com`
+- News: BBC Sport, Sky Sports, Guardian, ESPN FC, Goal.com, Marca, Football Italia
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Roadmap (Post-MVP)
+
+- [ ] Match events timeline (goals, cards, substitutions)
+- [ ] Follow teams / personalised home feed
+- [ ] Error boundaries for ESPN downtime
+- [ ] PWA with push notifications for live goals
+- [ ] Global Cmd+K search across teams, matches, and news
