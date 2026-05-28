@@ -20,7 +20,7 @@ const withTimeout = <T>(promise: Promise<T>, ms: number): Promise<T> => {
 
 const RSS_FEEDS = [
     { url: 'https://feeds.bbci.co.uk/sport/football/rss.xml', source: 'BBC Sport', category: 'Premier League' },
-    { url: 'https://www.skysports.com/rss/12040', source: 'Sky Sports', category: 'Premier League' },
+    { url: 'https://www.skysports.com/rss/12040', source: 'Sky Sports', category: 'Premier League', footballOnly: true },
     { url: 'https://www.caughtoffside.com/feed/', source: 'CaughtOffside', category: 'Premier League' },
     { url: 'https://www.theguardian.com/football/rss', source: 'The Guardian', category: 'Europe' },
     { url: 'https://www.espn.com/espn/rss/soccer/news', source: 'ESPN FC', category: 'Europe' },
@@ -29,6 +29,23 @@ const RSS_FEEDS = [
     { url: 'https://www.football-italia.net/rss.xml', source: 'Football Italia', category: 'Serie A' },
     { url: 'https://www.getfootballnewsgermany.com/feed/', source: 'Get German Football News', category: 'Bundesliga' },
 ]
+
+const NON_FOOTBALL_KEYWORDS = [
+    'f1', 'formula 1', 'formula one', 'grand prix', 'motogp', 'nascar',
+    'cricket', 'test match', 'ashes', 'ipl',
+    'rugby', 'six nations', 'super league',
+    'golf', 'masters', 'ryder cup',
+    'tennis', 'wimbledon', 'us open', 'australian open', 'french open',
+    'boxing', 'ufc', 'mma',
+    'nba', 'nfl', 'mlb', 'nhl',
+    'cycling', 'tour de france',
+    'athletics', 'olympics',
+]
+
+function isFootballArticle(title: string): boolean {
+    const t = title.toLowerCase()
+    return !NON_FOOTBALL_KEYWORDS.some(kw => t.includes(kw))
+}
 
 function extractImageFromHtml(html: string): string | null {
     if (!html) return null
@@ -106,7 +123,7 @@ export async function GET() {
         )
 
         const articles = [...rssArticles, ...uniqueESPN]
-            .filter(a => a.title && a.url)
+            .filter(a => a.title && a.url && isFootballArticle(a.title))
             .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime())
 
         return NextResponse.json(articles, {
