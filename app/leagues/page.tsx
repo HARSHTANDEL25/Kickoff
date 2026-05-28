@@ -120,7 +120,7 @@ export default function LeaguesPage() {
                 {/* European competitions */}
                 <div className='mb-10'>
                     <p className='text-xs text-[#9ca3af] uppercase tracking-widest mb-3 font-medium'>European</p>
-                    <div className='flex gap-4 pb-2'>
+                    <div className='flex gap-4 overflow-x-auto pb-2'>
                         {LEAGUES.filter(l => l.european).map((l, i) => (
                             <LeagueCard key={l.key} l={l} i={i + 5} activeLeague={activeLeague} onClick={() => handleLeagueClick(l.key)} />
                         ))}
