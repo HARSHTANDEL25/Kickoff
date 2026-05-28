@@ -1,6 +1,7 @@
 "use client"
 
 import Image from 'next/image'
+import Link from 'next/link'
 
 type Standing = {
     rank: number
@@ -22,7 +23,7 @@ const FormDot = ({ result }: { result: string }) => {
     return <span className={`w-2 h-2 rounded-full ${color} inline-block`} />
 }
 
-export default function StandingsTable({ standings }: { standings: Standing[] }) {
+export default function StandingsTable({ standings, leagueSlug }: { standings: Standing[]; leagueSlug?: string }) {
     return (
         <div className='w-full overflow-x-auto'>
             <table className='w-full text-sm'>
@@ -46,12 +47,15 @@ export default function StandingsTable({ standings }: { standings: Standing[] })
                         >
                             <td className='py-2.5 pl-3 text-[#9ca3af] text-xs'>{row.rank}</td>
                             <td className='py-2.5 pl-2'>
-                                <div className='flex items-center gap-2'>
+                                <Link
+                                    href={leagueSlug ? `/team/${row.team.id}?league=${leagueSlug}` : '#'}
+                                    className='flex items-center gap-2 hover:opacity-80 transition-opacity'
+                                >
                                     <div className='relative w-5 h-5 shrink-0'>
                                         <Image src={row.team.logo} alt={row.team.name} fill sizes='20px' className='object-contain' />
                                     </div>
                                     <span className='text-white font-medium text-xs truncate max-w-30'>{row.team.name}</span>
-                                </div>
+                                </Link>
                             </td>
                             <td className='py-2.5 text-center text-[#9ca3af] text-xs'>{row.all.played}</td>
                             <td className='py-2.5 text-center text-[#9ca3af] text-xs'>{row.all.win}</td>

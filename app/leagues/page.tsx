@@ -6,14 +6,14 @@ import StandingsTable from '../components/ui/StandingsTable'
 import KnockoutBracket from '../components/ui/KnockoutBracket'
 
 const LEAGUES = [
-    { key: 'pl', name: 'Premier League', country: 'England', flag: '🏴', european: false, color: '#3d195b', accent: '#e90052' },
-    { key: 'laliga', name: 'La Liga', country: 'Spain', flag: '🇪🇸', european: false, color: '#ff4b44', accent: '#ff4b44' },
-    { key: 'seriea', name: 'Serie A', country: 'Italy', flag: '🇮🇹', european: false, color: '#024494', accent: '#024494' },
-    { key: 'bundesliga', name: 'Bundesliga', country: 'Germany', flag: '🇩🇪', european: false, color: '#d3010c', accent: '#d3010c' },
-    { key: 'ligue1', name: 'Ligue 1', country: 'France', flag: '🇫🇷', european: false, color: '#091c3e', accent: '#1d9bf0' },
-    { key: 'ucl', name: 'Champions League', country: 'Europe', flag: '⭐', european: true, color: '#001d3d', accent: '#00f5d4' },
-    { key: 'uel', name: 'Europa League', country: 'Europe', flag: '🟠', european: true, color: '#7c2d12', accent: '#f97316' },
-    { key: 'uecl', name: 'Conference League', country: 'Europe', flag: '🔵', european: true, color: '#1e3a5f', accent: '#60a5fa' },
+    { key: 'pl', slug: 'eng.1', name: 'Premier League', country: 'England', flag: '🏴', european: false, color: '#3d195b', accent: '#e90052' },
+    { key: 'laliga', slug: 'esp.1', name: 'La Liga', country: 'Spain', flag: '🇪🇸', european: false, color: '#ff4b44', accent: '#ff4b44' },
+    { key: 'seriea', slug: 'ita.1', name: 'Serie A', country: 'Italy', flag: '🇮🇹', european: false, color: '#024494', accent: '#024494' },
+    { key: 'bundesliga', slug: 'ger.1', name: 'Bundesliga', country: 'Germany', flag: '🇩🇪', european: false, color: '#d3010c', accent: '#d3010c' },
+    { key: 'ligue1', slug: 'fra.1', name: 'Ligue 1', country: 'France', flag: '🇫🇷', european: false, color: '#091c3e', accent: '#1d9bf0' },
+    { key: 'ucl', slug: 'uefa.champions', name: 'Champions League', country: 'Europe', flag: '⭐', european: true, color: '#001d3d', accent: '#00f5d4' },
+    { key: 'uel', slug: 'uefa.europa', name: 'Europa League', country: 'Europe', flag: '🟠', european: true, color: '#7c2d12', accent: '#f97316' },
+    { key: 'uecl', slug: 'uefa.europa.conf', name: 'Conference League', country: 'Europe', flag: '🔵', european: true, color: '#1e3a5f', accent: '#60a5fa' },
 ]
 
 function LeagueCard({ l, i, activeLeague, onClick }: { l: typeof LEAGUES[0]; i: number; activeLeague: string; onClick: () => void }) {
@@ -152,7 +152,7 @@ export default function LeaguesPage() {
                                     ))}
                                 </div>
                             ) : (
-                                <StandingsTable standings={standings} />
+                                <StandingsTable standings={standings} leagueSlug={league.slug} />
                             )}
                         </div>
                     </div>

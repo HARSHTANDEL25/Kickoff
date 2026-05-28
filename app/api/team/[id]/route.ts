@@ -1,25 +1,47 @@
 import { NextResponse } from 'next/server'
 
+const DOMESTIC_LEAGUES = ['eng.1', 'esp.1', 'ita.1', 'ger.1', 'fra.1']
+const COMPETITION_LEAGUES = ['uefa.champions', 'uefa.europa', 'uefa.europa.conf']
+
+async function resolveDomesticLeague(id: string): Promise<{ league: string; data: any } | null> {
+    const results = await Promise.allSettled(
+        DOMESTIC_LEAGUES.map(l =>
+            fetch(`https://site.api.espn.com/apis/site/v2/sports/soccer/${l}/teams/${id}`, { next: { revalidate: 300 } })
+                .then(r => r.ok ? r.json() : Promise.reject())
+                .then(d => d.team?.standingSummary ? { league: l, data: d } : Promise.reject())
+        )
+    ) 
+    const found = results.find(r => r.status === 'fulfilled')
+    return found?.status === 'fulfilled' ? found.value : null
+}
+
 export async function GET(
     request: Request,
     { params }: { params: Promise<{ id: string }> }
 ) {
     const { id } = await params
     const league = new URL(request.url).searchParams.get('league') || 'eng.1'
+    const isCompetition = COMPETITION_LEAGUES.includes(league)
     const base = `https://site.api.espn.com/apis/site/v2/sports/soccer/${league}/teams/${id}`
 
     try {
-        const [teamRes, rosterRes, scheduleRes] = await Promise.all([
-            fetch(base, { next: { revalidate: 300 } }),
+        const [rosterRes, scheduleRes] = await Promise.all([
             fetch(`${base}/roster`, { next: { revalidate: 300 } }),
             fetch(`${base}/schedule`, { next: { revalidate: 300 } }),
         ])
 
-        const [teamData, rosterData, scheduleData] = await Promise.all([
-            teamRes.json(),
+        const [rosterData, scheduleData] = await Promise.all([
             rosterRes.json(),
             scheduleRes.json(),
         ])
+
+        let teamData: any
+        if (isCompetition) {
+            const resolved = await resolveDomesticLeague(id)
+            teamData = resolved?.data ?? {}
+        } else {
+            teamData = await fetch(base, { next: { revalidate: 300 } }).then(r => r.json())
+        }
 
         const t = teamData.team ?? {}
         const record = t.record?.items?.[0]
