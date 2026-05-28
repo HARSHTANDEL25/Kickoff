@@ -75,7 +75,7 @@ const Hero = () => {
                     {[
                         { value: 'Top 5 ', label: 'Leagues' },
                         { value: '8', label: 'News Sources' },
-                        { value: '30s', label: 'Refresh Rate' },
+                        { value: '24/7', label: 'Live Updates'}
                     ].map((stat, i) => (
                         <div key={i}>
                             <div className='text-2xl font-bold' style={{ color: 'var(--accent)' }}>{stat.value}</div>
