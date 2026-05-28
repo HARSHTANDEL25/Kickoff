@@ -12,7 +12,21 @@ const ScienceGothic = Science_Gothic({
 
 export const metadata: Metadata = {
   title: "KickOff — Your Football Hub",
-  description: "Live scores, news, transfers, standings — all in one place.",
+  description: "Live scores, transfers, news and standings for Premier League, La Liga, Serie A, Bundesliga and Ligue 1 — all in one place.",
+  keywords: ["football", "live scores", "transfers", "Premier League", "La Liga", "Serie A", "Bundesliga", "Ligue 1"],
+  openGraph: {
+    title: "KickOff — Your Football Hub",
+    description: "Live scores, transfers, news and standings — all in one place.",
+    siteName: "KickOff",
+    images: [{ url: "/opengraph-image", width: 1200, height: 630 }],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "KickOff — Your Football Hub",
+    description: "Live scores, transfers, news and standings — all in one place.",
+    images: ["/opengraph-image"],
+  },
 };
 
 export default function RootLayout({

@@ -80,7 +80,10 @@ const MobileNavigation = () => {
                       : "text-[#9ca3af] border-transparent hover:text-white hover:bg-white/5"
                   }`}
                 >
-                  <span>{nav?.label}</span>
+                  <span className="flex items-center gap-3">
+                    {nav.icon && <nav.icon size={16} className={isActive ? "text-[#00F5D4]" : "text-[#6b7280] group-hover:text-white transition-colors"} />}
+                    {nav?.label}
+                  </span>
 
                   <span
                     className={`h-2 w-2 rounded-full transition-all duration-200 ${
