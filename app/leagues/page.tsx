@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import StandingsTable from '../components/ui/StandingsTable'
 import KnockoutBracket from '../components/ui/KnockoutBracket'
@@ -55,6 +55,12 @@ export default function LeaguesPage() {
     const [loadingBracket, setLoadingBracket] = useState(false)
     const [standingsCache, setStandingsCache] = useState<Record<string, any[]>>({})
     const [bracketCache, setBracketCache] = useState<Record<string, any[]>>({})
+    const contentRef = useRef<HTMLDivElement>(null)
+
+    const handleLeagueClick = (key: string) => {
+        setActiveLeague(key)
+        setTimeout(() => contentRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50)
+    }
 
     const league = LEAGUES.find(l => l.key === activeLeague)!
 
@@ -106,7 +112,7 @@ export default function LeaguesPage() {
                     <p className='text-xs text-[#9ca3af] uppercase tracking-widest mb-3 font-medium'>Domestic</p>
                     <div className='flex gap-4 overflow-x-auto pb-2'>
                         {LEAGUES.filter(l => !l.european).map((l, i) => (
-                            <LeagueCard key={l.key} l={l} i={i} activeLeague={activeLeague} onClick={() => setActiveLeague(l.key)} />
+                            <LeagueCard key={l.key} l={l} i={i} activeLeague={activeLeague} onClick={() => handleLeagueClick(l.key)} />
                         ))}
                     </div>
                 </div>
@@ -116,12 +122,13 @@ export default function LeaguesPage() {
                     <p className='text-xs text-[#9ca3af] uppercase tracking-widest mb-3 font-medium'>European</p>
                     <div className='flex gap-4 pb-2'>
                         {LEAGUES.filter(l => l.european).map((l, i) => (
-                            <LeagueCard key={l.key} l={l} i={i + 5} activeLeague={activeLeague} onClick={() => setActiveLeague(l.key)} />
+                            <LeagueCard key={l.key} l={l} i={i + 5} activeLeague={activeLeague} onClick={() => handleLeagueClick(l.key)} />
                         ))}
                     </div>
                 </div>
 
                 {/* Content */}
+                <div ref={contentRef} />
                 {league.european ? (
                     <div>
                         <h2 className='text-lg font-bold text-white mb-4'>Knockout Bracket</h2>
