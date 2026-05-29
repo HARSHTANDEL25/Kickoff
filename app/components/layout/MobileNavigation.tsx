@@ -1,7 +1,7 @@
 "use client";
 
 import navlinks from "@/app/lib/data/navigation";
-import { Menu, X } from "lucide-react";
+import { Menu, Search, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -49,12 +49,14 @@ const MobileNavigation = () => {
           </button>
 
           {/* Logo */}
-          <span className="text-lg font-black tracking-tight">
+          <Link href="/" onClick={() => setOpen(false)} className="text-lg font-black tracking-tight">
             <span className="text-white">Kick</span>
             <span className="text-[#00f5d4]">Off</span>
-          </span>
+          </Link>
 
-          <div className="w-10" />
+          <Link href="/teams" onClick={() => setOpen(false)} className="p-2 rounded-lg text-[#9ca3af] hover:text-white hover:bg-white/5 transition-all duration-200">
+            <Search size={20} />
+          </Link>
         </div>
 
         {/* Dropdown */}
@@ -97,9 +99,13 @@ const MobileNavigation = () => {
             })}
 
             {/* CTA Button */}
-            <button className="mt-3 w-full rounded-xl bg-[#00F5D4] text-black font-semibold py-3 text-sm transition-all duration-200 hover:opacity-90 active:scale-[0.98]">
+            <Link
+              href="/live"
+              onClick={() => setOpen(false)}
+              className="mt-3 w-full rounded-xl bg-[#00F5D4] text-black font-semibold py-3 text-sm transition-all duration-200 hover:opacity-90 active:scale-[0.98] flex items-center justify-center"
+            >
               Get Started
-            </button>
+            </Link>
           </div>
         </div>
       </div>
