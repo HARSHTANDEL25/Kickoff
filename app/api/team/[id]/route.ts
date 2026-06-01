@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 
 const DOMESTIC_LEAGUES = ['eng.1', 'esp.1', 'ita.1', 'ger.1', 'fra.1']
-const COMPETITION_LEAGUES = ['uefa.champions', 'uefa.europa', 'uefa.europa.conf']
+const COMPETITION_LEAGUES = ['uefa.champions', 'uefa.europa', 'uefa.europa.conf', 'fifa.world']
 
 async function resolveDomesticLeague(id: string): Promise<{ league: string; data: any } | null> {
     const results = await Promise.allSettled(
@@ -37,8 +37,15 @@ export async function GET(
 
         let teamData: any
         if (isCompetition) {
-            const resolved = await resolveDomesticLeague(id)
-            teamData = resolved?.data ?? {}
+            // For national team competitions (World Cup), use the competition endpoint for team info
+            // For club competitions (UCL/UEL), resolve to domestic league for correct standing
+            const isNationalTeam = league === 'fifa.world'
+            if (isNationalTeam) {
+                teamData = await fetch(base, { next: { revalidate: 300 } }).then(r => r.json())
+            } else {
+                const resolved = await resolveDomesticLeague(id)
+                teamData = resolved?.data ?? {}
+            }
         } else {
             teamData = await fetch(base, { next: { revalidate: 300 } }).then(r => r.json())
         }
@@ -47,10 +54,15 @@ export async function GET(
         const record = t.record?.items?.[0]
         const getStat = (name: string) => record?.stats?.find((s: any) => s.name === name)?.value ?? 0
 
-        // Squad grouped by position
+        // Squad grouped by position — handle both flat and grouped ESPN roster formats
+        const rawAthletes = rosterData.athletes ?? []
+        const flatAthletes = rawAthletes.length > 0 && rawAthletes[0]?.items
+            ? rawAthletes.flatMap((group: any) => group.items ?? [])
+            : rawAthletes
+
         const posOrder = ['G', 'D', 'M', 'F']
         const squad: Record<string, any[]> = { G: [], D: [], M: [], F: [] }
-        for (const athlete of rosterData.athletes ?? []) {
+        for (const athlete of flatAthletes) {
             const pos = athlete.position?.abbreviation ?? 'F'
             const group = posOrder.find(p => pos.startsWith(p)) ?? 'F'
             squad[group].push({

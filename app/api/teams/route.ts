@@ -6,6 +6,7 @@ const LEAGUES = [
     { slug: 'ita.1', name: 'Serie A' },
     { slug: 'ger.1', name: 'Bundesliga' },
     { slug: 'fra.1', name: 'Ligue 1' },
+    { slug: 'fifa.world', name: 'World Cup 2026' },
 ]
 
 export async function GET() {
