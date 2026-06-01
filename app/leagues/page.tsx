@@ -4,16 +4,18 @@ import { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import StandingsTable from '../components/ui/StandingsTable'
 import KnockoutBracket from '../components/ui/KnockoutBracket'
+import GroupStandings from '../components/ui/GroupStandings'
 
 const LEAGUES = [
-    { key: 'pl', slug: 'eng.1', name: 'Premier League', country: 'England', flag: '🏴', european: false, color: '#3d195b', accent: '#e90052' },
-    { key: 'laliga', slug: 'esp.1', name: 'La Liga', country: 'Spain', flag: '🇪🇸', european: false, color: '#ff4b44', accent: '#ff4b44' },
-    { key: 'seriea', slug: 'ita.1', name: 'Serie A', country: 'Italy', flag: '🇮🇹', european: false, color: '#024494', accent: '#024494' },
-    { key: 'bundesliga', slug: 'ger.1', name: 'Bundesliga', country: 'Germany', flag: '🇩🇪', european: false, color: '#d3010c', accent: '#d3010c' },
-    { key: 'ligue1', slug: 'fra.1', name: 'Ligue 1', country: 'France', flag: '🇫🇷', european: false, color: '#091c3e', accent: '#1d9bf0' },
-    { key: 'ucl', slug: 'uefa.champions', name: 'Champions League', country: 'Europe', flag: '⭐', european: true, color: '#001d3d', accent: '#00f5d4' },
-    { key: 'uel', slug: 'uefa.europa', name: 'Europa League', country: 'Europe', flag: '🟠', european: true, color: '#7c2d12', accent: '#f97316' },
-    { key: 'uecl', slug: 'uefa.europa.conf', name: 'Conference League', country: 'Europe', flag: '🔵', european: true, color: '#1e3a5f', accent: '#60a5fa' },
+    { key: 'pl', slug: 'eng.1', name: 'Premier League', country: 'England', flag: '🏴', european: false, international: false, color: '#3d195b', accent: '#e90052' },
+    { key: 'laliga', slug: 'esp.1', name: 'La Liga', country: 'Spain', flag: '🇪🇸', european: false, international: false, color: '#ff4b44', accent: '#ff4b44' },
+    { key: 'seriea', slug: 'ita.1', name: 'Serie A', country: 'Italy', flag: '🇮🇹', european: false, international: false, color: '#024494', accent: '#024494' },
+    { key: 'bundesliga', slug: 'ger.1', name: 'Bundesliga', country: 'Germany', flag: '🇩🇪', european: false, international: false, color: '#d3010c', accent: '#d3010c' },
+    { key: 'ligue1', slug: 'fra.1', name: 'Ligue 1', country: 'France', flag: '🇫🇷', european: false, international: false, color: '#091c3e', accent: '#1d9bf0' },
+    { key: 'ucl', slug: 'uefa.champions', name: 'Champions League', country: 'Europe', flag: '⭐', european: true, international: false, color: '#001d3d', accent: '#00f5d4' },
+    { key: 'uel', slug: 'uefa.europa', name: 'Europa League', country: 'Europe', flag: '🟠', european: true, international: false, color: '#7c2d12', accent: '#f97316' },
+    { key: 'uecl', slug: 'uefa.europa.conf', name: 'Conference League', country: 'Europe', flag: '🔵', european: true, international: false, color: '#1e3a5f', accent: '#60a5fa' },
+    { key: 'wc', slug: 'fifa.world', name: 'World Cup 2026', country: 'International', flag: '🌍', european: false, international: true, color: '#1a3a1a', accent: '#00f5d4' },
 ]
 
 function LeagueCard({ l, i, activeLeague, onClick }: { l: typeof LEAGUES[0]; i: number; activeLeague: string; onClick: () => void }) {
@@ -35,13 +37,13 @@ function LeagueCard({ l, i, activeLeague, onClick }: { l: typeof LEAGUES[0]; i: 
             }}
         >
             {isActive && (
-                <motion.div layoutId={`glow-${l.european ? 'eu' : 'dom'}`} className='absolute inset-0 opacity-20 blur-xl' style={{ background: l.accent }} />
+                <motion.div layoutId={`glow-${l.key}`} className='absolute inset-0 opacity-20 blur-xl' style={{ background: l.accent }} />
             )}
             <span className='text-3xl relative z-10'>{l.flag}</span>
             <span className='text-sm font-bold whitespace-nowrap relative z-10' style={{ color: isActive ? '#fff' : '#9ca3af' }}>{l.name}</span>
             <span className='text-xs relative z-10' style={{ color: isActive ? l.accent : '#6b7280' }}>{l.country}</span>
             {isActive && (
-                <motion.div layoutId={`underline-${l.european ? 'eu' : 'dom'}`} className='absolute bottom-0 left-4 right-4 h-0.5 rounded-full' style={{ background: l.accent }} />
+                <motion.div layoutId={`underline-${l.key}`} className='absolute bottom-0 left-4 right-4 h-0.5 rounded-full' style={{ background: l.accent }} />
             )}
         </motion.button>
     )
@@ -50,10 +52,11 @@ function LeagueCard({ l, i, activeLeague, onClick }: { l: typeof LEAGUES[0]; i: 
 export default function LeaguesPage() {
     const [activeLeague, setActiveLeague] = useState('pl')
     const [standings, setStandings] = useState<any[]>([])
+    const [wcGroups, setWcGroups] = useState<any[]>([])
     const [bracket, setBracket] = useState<any[]>([])
     const [loadingStandings, setLoadingStandings] = useState(true)
     const [loadingBracket, setLoadingBracket] = useState(false)
-    const [standingsCache, setStandingsCache] = useState<Record<string, any[]>>({})
+    const [standingsCache, setStandingsCache] = useState<Record<string, any>>({})
     const [bracketCache, setBracketCache] = useState<Record<string, any[]>>({})
     const contentRef = useRef<HTMLDivElement>(null)
 
@@ -82,15 +85,20 @@ export default function LeaguesPage() {
             }
         } else {
             if (standingsCache[activeLeague]) {
-                setStandings(standingsCache[activeLeague])
+                const cached = standingsCache[activeLeague]
+                if (cached.type === 'groups') setWcGroups(cached.groups)
+                else setStandings(cached)
             } else {
                 setLoadingStandings(true)
                 fetch(`/api/standings?league=${activeLeague}`)
                     .then(r => r.json())
                     .then(data => {
-                        const rows = Array.isArray(data) ? data : []
-                        setStandings(rows)
-                        setStandingsCache(prev => ({ ...prev, [activeLeague]: rows }))
+                        setStandingsCache(prev => ({ ...prev, [activeLeague]: data }))
+                        if (data.type === 'groups') {
+                            setWcGroups(data.groups ?? [])
+                        } else {
+                            setStandings(Array.isArray(data) ? data : [])
+                        }
                         setLoadingStandings(false)
                     })
                     .catch(() => setLoadingStandings(false))
@@ -111,14 +119,14 @@ export default function LeaguesPage() {
                 <div className='mb-4'>
                     <p className='text-xs text-[#9ca3af] uppercase tracking-widest mb-3 font-medium'>Domestic</p>
                     <div className='flex gap-4 overflow-x-auto pb-2'>
-                        {LEAGUES.filter(l => !l.european).map((l, i) => (
+                        {LEAGUES.filter(l => !l.european && !l.international).map((l, i) => (
                             <LeagueCard key={l.key} l={l} i={i} activeLeague={activeLeague} onClick={() => handleLeagueClick(l.key)} />
                         ))}
                     </div>
                 </div>
 
                 {/* European competitions */}
-                <div className='mb-10'>
+                <div className='mb-4'>
                     <p className='text-xs text-[#9ca3af] uppercase tracking-widest mb-3 font-medium'>European</p>
                     <div className='flex gap-4 overflow-x-auto pb-2'>
                         {LEAGUES.filter(l => l.european).map((l, i) => (
@@ -127,8 +135,19 @@ export default function LeaguesPage() {
                     </div>
                 </div>
 
+                {/* International */}
+                <div className='mb-10'>
+                    <p className='text-xs text-[#9ca3af] uppercase tracking-widest mb-3 font-medium'>International</p>
+                    <div className='flex gap-4 overflow-x-auto pb-2'>
+                        {LEAGUES.filter(l => l.international).map((l, i) => (
+                            <LeagueCard key={l.key} l={l} i={i + 8} activeLeague={activeLeague} onClick={() => handleLeagueClick(l.key)} />
+                        ))}
+                    </div>
+                </div>
+
                 {/* Content */}
                 <div ref={contentRef} />
+
                 {league.european ? (
                     <div>
                         <h2 className='text-lg font-bold text-white mb-4'>Knockout Bracket</h2>
@@ -147,6 +166,19 @@ export default function LeaguesPage() {
                                 <KnockoutBracket rounds={bracket} />
                             )}
                         </div>
+                    </div>
+                ) : league.international ? (
+                    <div>
+                        <h2 className='text-lg font-bold text-white mb-4'>Group Stage</h2>
+                        {loadingStandings ? (
+                            <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+                                {Array.from({ length: 8 }).map((_, i) => (
+                                    <div key={i} className='glass rounded-2xl h-48 animate-pulse' />
+                                ))}
+                            </div>
+                        ) : (
+                            <GroupStandings groups={wcGroups} leagueSlug={league.slug} />
+                        )}
                     </div>
                 ) : (
                     <div>
