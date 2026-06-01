@@ -9,6 +9,7 @@ const ESPN_LEAGUES = [
     { slug: 'uefa.champions', name: 'Champions League', country: 'Europe' },
     { slug: 'uefa.europa', name: 'Europa League', country: 'Europe' },
     { slug: 'uefa.europa.conf', name: 'Conference League', country: 'Europe' },
+    { slug: 'fifa.world', name: 'World Cup', country: 'International' },
 ]
 
 function mapStatus(name: string, period: number): string {
@@ -73,7 +74,7 @@ export async function GET() {
             ESPN_LEAGUES.map(league =>
                 fetch(
                     `https://site.api.espn.com/apis/site/v2/sports/soccer/${league.slug}/scoreboard`,
-                    { next: { revalidate: 60 } }
+                    { next: { revalidate: 30 } }
                 )
                     .then(res => res.json())
                     .then(data => (data.events ?? []).map((e: any) => mapEvent(e, league)).filter(Boolean))
