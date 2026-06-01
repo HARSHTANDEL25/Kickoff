@@ -25,7 +25,7 @@ const isLive = (s: string) => LIVE_STATUSES.includes(s)
 const isToday = (date: string) => new Date().toDateString() === new Date(date).toDateString()
 const isUpcoming = (date: string) => new Date(date) > new Date() && !isToday(date)
 
-const LEAGUE_TABS = ['All', 'Premier League', 'La Liga', 'Serie A', 'Bundesliga', 'Ligue 1', 'Champions League', 'Europa League', 'Conference League']
+const LEAGUE_TABS = ['All', 'World Cup', 'Premier League', 'La Liga', 'Serie A', 'Bundesliga', 'Ligue 1', 'Champions League', 'Europa League', 'Conference League']
 
 function SectionLabel({ children, count }: { children: React.ReactNode; count?: number }) {
     return (
@@ -92,11 +92,13 @@ export default function LivePage() {
         fetchFixtures()
     }, [fetchFixtures])
 
-    // Auto-refresh every 30 seconds
+    // Adaptive polling — 15s when live matches, 60s otherwise
     useEffect(() => {
-        const id = setInterval(() => fetchFixtures(true), 30000)
+        const hasLiveNow = fixtures.some(f => isLive(f.fixture.status.short))
+        const interval = hasLiveNow ? 15000 : 60000
+        const id = setInterval(() => fetchFixtures(true), interval)
         return () => clearInterval(id)
-    }, [fetchFixtures])
+    }, [fetchFixtures, fixtures])
 
     const filtered = activeTab === 'All'
         ? fixtures
@@ -128,7 +130,7 @@ export default function LivePage() {
                                 </motion.span>
                             )}
                         </div>
-                        <p className='text-sm text-[#9ca3af]'>Real-time scores · auto-refreshes every 30s</p>
+                        <p className='text-sm text-[#9ca3af]'>Auto-refreshes every {fixtures.some(f => isLive(f.fixture.status.short)) ? '15s' : '60s'}</p>
                     </div>
                     <div className='flex items-center gap-3 pt-1'>
                         <RefreshBar lastUpdated={lastUpdated} refreshing={refreshing} />
