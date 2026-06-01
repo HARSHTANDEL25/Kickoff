@@ -45,20 +45,35 @@ const resultLabel = (winner: boolean | null) => {
     return { label: 'D', cls: 'bg-[#6b7280] text-white' }
 }
 
-function JerseyBlock({ jersey, accentColor }: { jersey: string; accentColor: string }) {
+function JerseyBlock({ jersey, name, accentColor }: { jersey: string; name: string; accentColor: string }) {
+    const initials = name
+        ? name.split(' ').map(w => w[0]).filter(Boolean).slice(0, 2).join('').toUpperCase()
+        : '?'
+
+    if (!jersey) {
+        return (
+            <div
+                className='w-full h-20 rounded-lg flex items-center justify-center relative overflow-hidden'
+                style={{ background: `${accentColor}12` }}
+            >
+                <span className='absolute text-7xl font-black opacity-5 select-none leading-none'
+                    style={{ color: accentColor }}>{initials}</span>
+                <span className='relative text-3xl font-black tracking-tight' style={{ color: accentColor }}>
+                    {initials}
+                </span>
+            </div>
+        )
+    }
+
     return (
         <div
             className='w-full h-20 rounded-lg flex items-center justify-center relative overflow-hidden'
             style={{ background: `${accentColor}12` }}
         >
-            {/* Large faint number behind */}
             <span className='absolute text-7xl font-black opacity-10 select-none leading-none'
-                style={{ color: accentColor }}>
-                {jersey || '0'}
-            </span>
-            {/* Prominent jersey number */}
+                style={{ color: accentColor }}>{jersey}</span>
             <span className='relative text-3xl font-black' style={{ color: accentColor }}>
-                {jersey ? `#${jersey}` : '—'}
+                #{jersey}
             </span>
         </div>
     )
@@ -223,7 +238,7 @@ function TeamContent() {
                                         className='glass rounded-xl p-4 flex flex-col gap-2 relative overflow-hidden'
                                     >
                                         {/* Jersey block */}
-                                        <JerseyBlock jersey={p.jersey} accentColor={accentColor} />
+                                        <JerseyBlock jersey={p.jersey} name={p.name} accentColor={accentColor} />
 
                                         {/* Jersey + position badge */}
                                         <div className='flex items-center justify-between'>
