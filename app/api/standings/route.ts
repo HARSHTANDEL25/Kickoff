@@ -9,6 +9,7 @@ const LEAGUES: Record<string, string> = {
     ucl: 'uefa.champions',
     uel: 'uefa.europa',
     uecl: 'uefa.europa.conf',
+    wc: 'fifa.world',
 }
 
 const getStat = (stats: any[], abbr: string): number => {
@@ -27,9 +28,8 @@ export async function GET(request: Request) {
             { next: { revalidate: 3600 } }
         )
         const data = await res.json()
-        const entries = data.children?.[0]?.standings?.entries ?? []
 
-        const standings = entries.map((entry: any) => ({
+        const mapEntry = (entry: any) => ({
             rank: getStat(entry.stats, 'R'),
             team: {
                 id: entry.team?.id,
@@ -44,10 +44,20 @@ export async function GET(request: Request) {
                 draw: getStat(entry.stats, 'D'),
                 lose: getStat(entry.stats, 'L'),
             },
-            form: '',
-        }))
+        })
 
-        return NextResponse.json(standings)
+        // World Cup has multiple groups (children array has many groups)
+        const isGroups = (data.children?.length ?? 0) > 1
+        if (isGroups) {
+            const groups = data.children.map((group: any) => ({
+                name: group.name ?? group.abbreviation ?? '',
+                entries: (group.standings?.entries ?? []).map(mapEntry),
+            }))
+            return NextResponse.json({ type: 'groups', groups })
+        }
+
+        const entries = data.children?.[0]?.standings?.entries ?? []
+        return NextResponse.json(entries.map(mapEntry))
     } catch {
         return NextResponse.json({ error: 'Failed to fetch standings' }, { status: 500 })
     }
