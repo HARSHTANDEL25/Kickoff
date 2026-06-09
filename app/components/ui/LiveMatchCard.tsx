@@ -18,6 +18,7 @@ type Fixture = {
         away: { id: number; name: string; logo: string; winner: boolean | null }
     }
     goals: { home: number | null; away: number | null }
+    penalties?: { home: number | null; away: number | null } | null
 }
 
 const isLive = (s: string) => ['1H', '2H', 'ET', 'P', 'HT'].includes(s)
@@ -32,7 +33,7 @@ const formatDate = (date: string) => {
     return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) + ' · ' + formatTime(date)
 }
 
-export default function LiveMatchCard({ fixture, league, teams, goals, index = 0 }: Fixture & { index?: number }) {
+export default function LiveMatchCard({ fixture, league, teams, goals, penalties, index = 0 }: Fixture & { index?: number }) {
     const live = isLive(fixture.status.short)
     const finished = fixture.status.short === 'FT'
     const slug = getLeagueSlug(league.name)
@@ -96,6 +97,11 @@ export default function LiveMatchCard({ fixture, league, teams, goals, index = 0
                                         {goals.away ?? 0}
                                     </span>
                                 </div>
+                                {penalties && (
+                                    <span className='text-xs text-[#9ca3af] mt-1'>
+                                        ({penalties.home} – {penalties.away} pens)
+                                    </span>
+                                )}
                                 {live && (
                                     <span className='text-xs text-[#FF4747] font-medium mt-1 uppercase tracking-wide'>
                                         {fixture.status.short === 'HT' ? 'Half Time' : 'Live'}

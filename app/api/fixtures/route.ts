@@ -65,6 +65,10 @@ function mapEvent(event: any, league: typeof ESPN_LEAGUES[0]) {
             home: home?.score != null ? parseInt(home.score) : null,
             away: away?.score != null ? parseInt(away.score) : null,
         },
+        penalties: home?.shootoutScore != null || away?.shootoutScore != null ? {
+            home: home?.shootoutScore != null ? parseInt(home.shootoutScore) : null,
+            away: away?.shootoutScore != null ? parseInt(away.shootoutScore) : null,
+        } : null,
     }
 }
 
