@@ -25,7 +25,7 @@ type Fixture = {
     goals: { home: number | null; away: number | null }
 }
 
-const TABS = ['All', 'Premier League', 'La Liga', 'Serie A', 'Bundesliga', 'Ligue 1', 'Champions League', 'Europa League', 'Conference League']
+const TABS = ['All', 'World Cup', 'Premier League', 'La Liga', 'Serie A', 'Bundesliga', 'Ligue 1', 'Champions League', 'Europa League', 'Conference League']
 
 export default function FixturesSection() {
     const [fixtures, setFixtures] = useState<Fixture[]>([])
