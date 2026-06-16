@@ -7,6 +7,7 @@ export const LEAGUE_SLUGS: Record<string, string> = {
     'Champions League': 'uefa.champions',
     'Europa League': 'uefa.europa',
     'Conference League': 'uefa.europa.conf',
+    'World Cup': 'fifa.world',
 }
 
 export function getLeagueSlug(leagueName: string): string {
