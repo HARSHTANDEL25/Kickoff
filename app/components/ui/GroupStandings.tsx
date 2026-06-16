@@ -33,7 +33,7 @@ function GroupTable({ group, leagueSlug }: { group: Group; leagueSlug?: string }
                     </tr>
                 </thead>
                 <tbody>
-                    {group.entries.map((row, i) => (
+                    {[...group.entries].sort((a, b) => a.rank - b.rank).map((row, i) => (
                         <tr key={row.team.id} className={`border-b border-white/3 hover:bg-white/5 transition-colors ${i < 2 ? 'border-l-2 border-l-[#00F5D4]' : 'border-l-2 border-l-transparent'}`}>
                             <td className='py-2.5 pl-3 text-[#9ca3af]'>{row.rank || i + 1}</td>
                             <td className='py-2.5 pl-2'>

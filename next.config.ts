@@ -3,7 +3,8 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   /* config options here */
   images:{
-        remotePatterns: [
+    unoptimized: true,
+    remotePatterns: [
       { protocol: 'https', hostname: 'media.api-sports.io' },
       { protocol: 'https', hostname: 'e1.365dm.com' },
       { protocol: 'https', hostname: 'e0.365dm.com' },
@@ -13,7 +14,6 @@ const nextConfig: NextConfig = {
       { protocol: 'https', hostname: 'a.espncdn.com' },
       { protocol: 'https', hostname: 'icdn.football-italia.net' },
       { protocol: 'https', hostname: 'icdn.caughtoffside.com' },
-
     ],
   }
   
